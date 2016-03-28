@@ -1,7 +1,25 @@
 \chapter{Introduction}\label{chap:Intro}
+In last few decades, people defined several parallel programming models to help abstract the parallel computing system interfaces. In recent years, a programming model refered as  \textit{Partitioned Global Address Space}(PGAS) has engaged much attention as a highly scalable approach for programming large-scale parallel systems. The PGAS programming model is chracterized by a logically partitioned global memory space, where partitions have affinity to the processes/threads executing the program. This property allow PGAS-based applications to specify an explicit data decomposition that reduces the number of remote accesses with longer latencies. This programming model marries the performance and data locality (partitioning) features of distributed memory mocal with the programmability and data referencing simplicity of a shared-memory (global address space) model. 
+
+Several languages and libraries follow the PGAS programming model. OpenSHMEM\cite{chapman2010introducing} and Global Arrays\cite{nieplocha1994global} are examples of library-based PGAS implementation, while Unified Parallel C(UPC)\cite{carlson1999introduction}, Titanium\cite{hilfinger2005titanium}, X10\cite{charles2005x10}, Chapel\cite{chamberlain2007parallel} and Coarray Fortran(CAF)\cite{numrich1998co} are examples of PGAS-based languages. Compared with the library-based implementation, which assume the programmer will use the library calls to implement the correct semantics following the programming specification, the language-based implementations aim to simpilify the burden of wrting applications that efficiently utilize these features and achieve performance goal for the non-expert programmers. However, the adopt of language-base implementation is much slower than the libraries-based implementation. 
+
+\section{Motivation}
+For a long time, Fortran is one of the dominant languages in HPC area. According to The National Energy Research Scientific Computing Center (NERSC), which is the primary scientific computing facility for the Office of Science in the U.S. Department of Energy.  over 1/2 the hours on their systems are used by Fortran codes. Fortran 2008 has introduced a set of language features that support PGAS programmin model, often refered as \textit{Coarray Fortran} or \textit{Fortran Coarrays}(CAF). Currently, only a few compilers embrace these new features into their latest release. Although Fortran 2008 has included a set of simple but efficient PGAS features, users demands for advanced Coarray features to express more complicated parallelism in their application. Based on that, the Fortran work group has identified a set of advanced features and plan to introduce them into next language standard\cite{caf-spec}. 
+
+The HPCTools Group in University of Houston has developed a funtional compiler and runtime implemenation to support the Coarray features in Fortran 2008\cite{EachempatiCAF2010}. In this thesis, we will go further to implement and evaluate the addtional parallel feature specified in the Technical Specification. 
+\section{Contributions}
+The contribution of this work includes:
 \begin{itemize}
-\item The work is important.
-\item What is the current situation for HPC and Coarray Fortran
-\item My contribution in this work
-\item Following organizations
+\item a description of an early implementation of additional parallel processing features, including teams, collectives, and barrier operations, which are complementary to the existing Fortran coarrays model and being developed for incorporation into the next revision of the Fortran standard
+\item optimization techniques in the runtime, including locality-aware optimization and distributed mapping table
+\item evaluation of enhanced coarray features using benchmarks to assess the usefulness of team-based synchronizations and collectives.
 \end{itemize}
+\section{Thesis Organization}
+This thesis is organized as follows:
+Chapter~\ref{chap:Background} will give a brief introduction of background information for this thesis. We discuss the concept of PGAS model. Then we have a tour of Fortran history, so that we can understand what we can do with this specific language in HPC area and why they include the PGAS model into their latest language standard. We then present a discussion of task decomposition cases in parallel program and the progress of other PGAS libraries and languages to express such decompostions. Finally, section~\ref{sec:survey} will give brief survey of two on-going Coarray Fortran projects. 
+
+Chapter~\ref{chap:Methods} reviews existing compiler and runtime infrastructure that we used for this thesis work. Also section\ref{sec:coarrays} will give a short introduction to Coarrays Fortran. Readers can fimiliar themselve with these syntax. This thesis does not cover the implementation of these features since they are established before this thesis work. 
+
+Chapter~\ref{chap:Algorithms} describes in detail the design of \textit{team} construct, including the \texttt{team\_type} variable, the functions supporting \textit{team} and the memory management in our runtime. In following section, we will discuss the effort we made in our runtime to optimize the \textit{team} construct in term of lantency and memory utilization.
+
+ Chapter~\ref{chap:Results} gives an evaluation of our implementation using microbenchmarks and benchmark from NAS Parallel Benchmarks. Finally, Chapter~\ref{chap:Conclusion} summarizes this thesis and includes a description of furture work. 

@@ -10,6 +10,12 @@
 \usepackage{uhthesis3}
 \usepackage{epsfig}
 \usepackage{epsf}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{subcaption}
+\usepackage[font=footnotesize]{subfig}
+\usepackage{float}
+%\usepackage[]{algorithm2e}
 \input{definitions.tex}
 %\input{algorithms}
 %
@@ -22,29 +28,24 @@
 %\input{psfig}
 %\input{dnmmath}
 %\input{ion-math}
-
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \setcounter{secnumdepth}{4}
 \begin{document}
 
-\title{\bf \large Thesis Title}
+\title{\bf \large Implementation and evaluation of Addtional Parallel Features in Coarray Fortran}
 \author{Shiyao Ge}
-\submitdate{August 2016} \degree{Masters}{Proposal}
+\submitdate{May 2016} \degree{Masters}{Proposal}
 \adviser{Barbara Chapman, Chairman\\
 Dept. of Natural Sciences \& Mathematics }
 
-\firstreader{Committee Member 1 \\
-Dept. of ABCD 2}
+\firstreader{Edgar Gabriel \\
+Dept. of Natural Sciences \& Mathematics }
 
-\secondreader{Committee Member 2\\
-Dept. of ABCD 2}
-
-\thirdreader{Committee Member 3\\
-Dept. of ABCD 3}
-
-\fourthreader{Committee Member 4\\
-Dept. of ABCD 4}
-
-
+\secondreader{Mikhail Sekachev\\
+TOTAL E\&P Research and Technology USA, LLC}
+ \threereadersfalse
+ \fourreadersfalse
+  \fivereadersfalse
 \copyrightfalse \makecoverpages
 \begin{acknowledgements}
 %\input{acknowledgements.tex}
@@ -80,18 +81,18 @@ Dept. of ABCD 4}
 %\FIGStrue
 
 \FIGSfalse
-
+%TODO: delete plain page before abstract
 
 % to fix the page number
 %\input{Sample_chapter.tex}
 %\input{table.tex}
 \input{chap1_Introduction.tex}
 \input{chap2_Background.tex}
-\input{chap3_Methods.tex}
-\input{chap4_Algorithms.tex}
+\input{chap3_Infrastructure.tex}
+\input{chap4_Implementation.tex}
 \input{chap5_Results.tex}
 \input{chap6_Conclusion.tex}
 
 \bibliographystyle{abbrv}
-%\bibliography{BIB/thesis,BIB/vcl14}
+\bibliography{thesis}
 \end{document}

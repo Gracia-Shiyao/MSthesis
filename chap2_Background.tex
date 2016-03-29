@@ -68,9 +68,7 @@ The first program pattern to consider is parallel divide-and-conquer method. In 
 
 The second pattern is more general. In parallel programming with task paralleism, it is common for different components of an algorithm to be assigned to different units. For example, a climate simulation may assign a subset of all processes to model the atmosphere, while an other subset to tackle with the ocean model. Each of these components can in turn be decoposed into seperate parts for different purposes or algorithms. For instance, a subset such as one piece that performs a stencil while another piece could do Fourier transform. In such case, the decomposition does not directly depend on the layout of the underlying machine, although we can tell it would be benefit to assign threads nears to each other into one functional team.
 
-Lot of researchers working in PGAS field realize the need for such method to do decomposition in parallel program. In 2012, 
-
-%TODO:UPC-TEAM, TITANIUM TEAM, PGAS-TEAM
+Lot of researchers working in PGAS field realize the need for such method to do decomposition in parallel program. Since 2012, researchers who was working on Titanium project and UPC project published their proposal to add hierarchical additions to the SPMD programming model\cite{kamil2012hierarchical}\cite{upc-teams}. They proposed the \textit{nested team} construct to express the hierarchy of underlying machines. Compared with MPI, this \textit{nested team} construct is more structural, however, it serves as an better abstraction of hiearchy, other than a general subset of processes. Later the OpenSHMEM work group\cite{shmem-teams} has proposed their \textit{team} design regarding to the task decomposition. The \textit{nested team} has been indentified as a reasonable way to carry the work.
 
 \section{Survey of Coarray Fortran Implementations}\label{sec:survey}
 
@@ -81,7 +79,6 @@ OpenCoarrays\cite{opencoarrays} is an open-source software project that produces
 
 OpenCoarrays is not a module for a particular compiler. It is a portable translation layer that supposed to convert Coarray syntax to an abstract API that should adapt to any non-CAF compiler later on. Right now it works with GNU Fortran compiler(gfortran). It supports Coarray syntax introduced in Fortran 2008, and some features in Technical Specification. As when we look into their source code, it shows they still need more optimization work on the to-do list. 
 
-%TODO: EDIT THIS SUBSECTION
 \subsection{Rice CAF 2.0}\label{sec:caf2.0}
 The research group in Rice University started their supporting of Coarrays in an early stage\cite{dotsenko2004multi}. They have implemented a prototype of an open-source, multiplatform CAF compiler that generates code for most common parallel architecture. The cafc compiler translates CAF into Fortran 90 plus calls to one-sided communication primitives, which can further be mapped to certain communication layer library calls. In this implementation, they have supported Coarray descriptor, shared memory object management,  translating coarray assignemnt to communication calls and some intrinsic procedures. Basically, the first version of cafc compiler supported most syntax mentioned in Fortran 2008. 
 
@@ -92,9 +89,14 @@ Soon after, the research group found the shortage of functions these syntax can 
 \item There is no support for collective communication
 \end{itemize}
 
-To address these shortcomings, Rice University is developing a clean-slate redesign of the Coarray Fortran programming model. Rice's new design for Coarray Fortran, which is call Coarray Fortran 2.0, is an expressive set of coarray-based extensions to Fortran designed to provide a productive parallel programming model. Compared to the emerging Fortran 2008, Rice's new coarray-based language extensions include some additional features:
+To address these shortcomings, Rice University is developing a redesign of the Coarray Fortran programming model. Rice's new design for Coarray Fortran, which is call Coarray Fortran 2.0, is an set of coarray-based extensions to Fortran designed to provide a different parallel programming model. Compared to the emerging Fortran 2008, Rice's new coarray-based language extensions include some additional features:
 \begin{itemize}
-\item process subsets known as teams, which support coarrays, collective communication, and relative indexing of process images for pair-wise operations, topologies, which augment teams with a logical communication structure,
-\item dynamic allocation/deallocation of coarrays and other shared data, local variables within subroutines: declaration and allocation of coarrays within the scope of a procedure is critical for library based-code, team-based coarray allocation and deallocation, global pointers in support of dynamic data structures, and enhanced support for synchronization for fine control over program execution, safe and scalable support for mutual exclusion, including locks and lock sets; and events, which provide a safe space for point-to-point synchronization.
+\item process subsets known as teams, which support coarrays, collective communication, and relative indexing of process images for pair-wise operations, 
+\item topologies, which augment teams with a logical communication structure,
+\item dynamic allocation/deallocation of coarrays and other shared data,
+\item team-based coarray allocation and deallocation, global pointers in support of dynamic data structures, \item enhanced support for synchronization for fine control over program execution,
 \end{itemize}
-Rice's implementation of Coarray Fortran 2.0 is a work in progress. We are working to create an open-source, portable, retargetable, high-quality CAF 2.0 compiler suitable for use with production codes. To achieve portability, our compiler performs a source-to-source translation from CAF to Fortran 90 with calls to our CAF 2.0 runtime library primitives. Our CAF compiler's generated code can be compiled by any Fortran 90 compiler that supports Cray pointers. To achieve high performance, we generate Fortran 90 that is readily optimizable by vendor compilers. Our CAF 2.0 runtime library uses UC Berkeley's GASNet library as a substrate for communication. GASNet's get and put operations are used to read and write remote coarray elements. GASNet's active message support is used to invoke operations on remote nodes. This capability is used to form teams and to look up information about remote coarrays so that process images can read and write them directly.
+
+Rice's implementations of Coarray Fortran 2.0 has the similiar way as we have implemented Fortran 2008. The compiler would translate the Coarray Fortran program to Fortran90/95 program with calls to runtime library primitives. 
+
+Although the group claim the Coarray Fortran 2.0 is still a progressing work, they have switched their focus to hierarchical PGAS or APGAS. \textit{Team} also show in context but in a little different manner. 

@@ -233,8 +233,9 @@ within the new team. It is otherwise implementation-defined how these image
 indices are assigned to team members; in our implementation, image indices are
 assigned to each image in the order of their indices in the current team.
 
+%code skeleton
 Forming a new team entails a coordinated exchange of information from every
-image in the current team. Our implementation is currently as follows. All the
+image in the current team. Our implementation is currently as shown in figure~\ref{fig:demo-form-team}. All the
 images collectively perform an \textit{allgather} operation to exchange the
 specified team numbers and (if given) image indices. Once this step completes,
 each image can determine the members (and their respective image indices) for
@@ -245,19 +246,20 @@ team} statement, this can be directly assigned to the \textit{this\_image}
 field. Otherwise, the new image index is determined by sorting the set of
 image indices which specified the same team number. The
 \textit{image\_index\_mapping} field is a pointer to an array which maps an
-image's image index in the new team to its image index in the initial team.
-The leader set contains the image indices for images in the team serving as designated leaders
-for their respective compute nodes. The intra-node set contains the
-image indices for all images in the team that share the same compute node.
-The leader set and intra-node set may be computed based on the runtime's
-determination of the process-to-node layout for the job. The \textit{siblings}
+image's image index in the new team to its image index in the initial team.The \textit{siblings}
 field, shown in Table~\ref{team-ds}, is a pointer to an array of image maps
 for every other new team formed. This is useful because an image may also
 access a coarray belonging to a different team, using an extension to the
 normal image selector syntax (e.g., $a[i, team\_number=2]$).  
 
-During the team formation step, we also allocate various synchronization flags
-to be used for team-based barriers and collective operations. For barriers, we
+
+In table~\ref{team-ds} we included two components related to the supernode information. The leader set contains the image indices for images in the team serving as designated leaders
+for their respective compute nodes. The intra-node set contains the
+image indices for all images in the team that share the same compute node.
+The leader set and intra-node set may be computed based on the runtime's
+determination of the process-to-node layout for the job. 
+
+ For barriers, we
 distinguish flags to be used for synchronization within a node via shared
 memory (available through \textit{intranode\_bar\_flags}),
 versus flags used to synchronize between images on separate nodes (available
@@ -266,35 +268,46 @@ data structure associated with each team, shown in Table~\ref{team-ds}.
 Pointers for accessing a partner image's
 synchronization flag at each round of the barrier are also precomputed and
 stored at this stage.
-%Another important aspect of the team data structure is to assess which
-%information it should maintain that is associatd only to this team. For
-%instance, the barrier is associated with specific team, so team need to keep
-%track of barrier's status. In form team, it need initialize barrier\_field,
-%showed in table~\ref{team-ds}. 
-Synchronization flags are also allocated and reserved for supported collective
-operations (specifically, \textit{allreduce}, \textit{reduce}, and
-\textit{broadcast}) that may be executed by the new team. This is necessary since we implement
-collectives using 1-sided communication which is decoupled from
-synchronization. Since these collectives entail different communication
-structures, in order to allow for their execution to partially overlap we
-allocate a distinct set of synchronization flags for each type during team
-formation. %More details on our support for team-based collectives and barriers
-%are given in Section~\ref{sec:collectives}.
 
-%In previous work, we have developed the memory heirarchy-awared method to
-%boost the performance of communication\cite{cafteams-cluster}. The
-%\texttt{team} data structure keeps track of the underlying memory structure to
-%perform the 2 level algorithms.
+\begin{figure}[H]
+    \begin{minipage}{0.35\columnwidth}
+     \lstset{language=C,basicstyle=\tt\small,
+     morekeywords={team, change}
+     }
+    \begin{lstlisting}
+void _form_team_( int *team_id, team_type * new_team_p,
+			int * new_index) {
+	/* input check */
+	new_team_p = allocate_memory(new_team_p);
+	team_info = form_teaminfo(team_id, new_index);
+	_alltoall_exchange(&(team_info), exchange_buf, current_team);
+	_calc_subteam(new_team_p, exchange_buf, *team_id);
+	_calc_codimension_mapping(new_team_p, exchange_buf);
+	}
 
-%As we described in Section~\ref{sec:mm}, the \texttt{team} is associated with
-%a portion of symmetric memory. It can not be determined when \texttt{form
-%team} is called since \texttt{form team} and \texttt{change team} can be
-%called in different phrase in program. The Coarray allocation between them is
-%still associated with the origin team.
-%
-%To exit from certain team, \texttt{end team} is called. It resets the global
-%environment variable to its parent team and marks this team as inactive. Team
-%data structure will be freed after its parent has been disabled.
+void _alltoall_exchange(team_info_t * team_info, 
+			team_info_t * exchange_buf, 
+			team_type *current_team) {
+	/*perform alltoall exchange function via shared buffer */
+	}
+
+void _calc_subteam(team_type *new_team_p, 
+		team_info_t * exchange_buf, 
+		int team_id) {
+	/*calculate the size of new sub-team, 
+	** fill the information into team structure */
+	}
+void _calc_codimension_mapping(team_type *new_team_p, 
+				team_info_t * exchange_buf) {
+	/*form up the codimension_mapping table
+	** based on the information in buffer */
+}
+\end{lstlisting}
+\end{minipage}
+\caption{Code skeleton of FORM\_TEAM}
+\label{fig:demo-form-team}
+\end{figure}
+
 
 The \texttt{change team} statement is used to change the \textit{current team}
 in which the encountering image is executing to a team referenced by a team
@@ -321,15 +334,174 @@ in a team while other members are executing in a different team. We make use
 of this fact in the synchronization-avoidance optimizations we implemented for
 collectives.
 
-\section{Runtime Data Locality Optimization}
-In order to make applications more scalable when running on nodes with many cores, the runtime should have some knowledge about the mapping of images on nodes and/or  cores.  If teams create subsets of images, there is no simple relationship between the image structure and the actual  underlying physical structure of the parallel system. Therefore, as a research methodology towards an efficient implementation of  teams, we propose to introduce a memory hierarchy-aware runtime for PGAS, in order to optimize communications within teams via the distinction between local and remote memory accesses.
+\subsection{Synchronization and Collective Operations}\label{sec:collectives}
 
-\section{Optimizing Team Structure}
+Take the team into consideration, we need to modify the synchronization and collective operations, including barrier, synchronization and reductions. We currently support \textit{reduce}, \textit{allreduce}, \textit{broadcast},
+and \textit{allgather} collective operations. The \textit{reduce} and
+\textit{allreduce} support handles both pre-defined reduction operations
+(\texttt{sum}, \texttt{min}, and \texttt{max}) as well as user-defined
+reduction operations. The \textit{allgather} support is used
+exclusively to facilitate formation of teams, and was implemented using
+Bruck's algorithm~\cite{bruck1997efficient} with 1-sided communication. The \textit{reduce},
+\textit{allreduce}, and \textit{broadcast} implementations are used for the
+corresponding intrinsic subroutines -- \texttt{co\_reduce}, \texttt{co\_sum},
+\texttt{co\_min}, \texttt{co\_max}, and \texttt{co\_broadcast}. We implemented
+the respective binomial tree algorithms for reduction and broadcast, and the
+recursive doubling algorithm for \textit{allreduce}. These well-known
+algorithms, which we implemented using 1-sided communication, are described in~\cite{thakur2005optimization}. Each of these algorithms complete in $\log P$
+steps for P images in a team, where on each step pairs of images are
+communicating -- either a write from one image to the other (\textit{reduce}
+and \textit{broadcast}), or independent writes from both images to the other
+image in the pair (\textit{allreduce}).
+
+During the team formation step, we allocate various synchronization flags
+to be used for team-based barriers and collective operations. These procedures are not shown in the skeleton code in figure~\ref{fig:demo-form-team}.
+
+Synchronization flags are also allocated and reserved for supported collective
+operations (specifically, \textit{allreduce}, \textit{reduce}, and
+\textit{broadcast}) that may be executed by the new team. This is necessary since we implement
+collectives using 1-sided communication which is decoupled from
+synchronization. Since these collectives entail different communication
+structures, in order to allow for their execution to partially overlap we
+allocate a distinct set of synchronization flags for each type during team
+formation. 
+
+Our collectives implementation makes use of a \textit{collectives buffer
+space} --  a fixed size, symmetric region which is reserved from the remote
+access memory segment. By default, the size is 4 MiB per image, but this may be
+adjusted through an environment variable. If this reserved buffer space is large
+enough, it will be used to carry out any of the data transfers required during
+the execution of a collective operation. Otherwise, all the images in the team
+will synchronously allocate a symmetric region of memory from the heap to
+serve as the buffer space for the execution of the operation. In order to
+carry out a \textit{reduce}, \textit{broadcast}, or \textit{allreduce}
+operation, each image will reserve from its buffer space a \textit{base
+buffer}.  The base buffer is used to hold the result of each step in the
+collective operation. Additionally, for \textit{reduce} and \textit{allreduce}
+each image will reserve at least one work buffer. The work buffers are used to
+hold data communicated by a partner on each step, which will be merged into
+the base buffer using the specified reduction operation. Our binomial tree
+reduction and broadcast algorithms assume that the root image will be image 1
+in the team. Therefore, we incur the cost of an additional communication to
+image 1 (for \textit{broadcast}) or from image 1 (for \textit{reduce}) when
+this is not the case. In the event that these operations are operating on
+large arrays which can not be accommodated within the buffer space available
+(determined by the image heap size), we can break up these arrays into chunks,
+and perform our algorithm on each of these chunks in sequence.
+
+\section{Runtime Optimizations}
+
+\subsection{Runtime Data Locality Optimization}
+The latency for inter-node remote memory accesses is typically significantly
+higher compared to intra-node memory accesses. Therefore, a reasonable
+strategy for collective operations that exhibit a fixed communication
+structure (which is the case our \textit{reduce}, \textit{allreduce}, and
+\textit{broadcast} algorithms)
+is to restructure the communication in such a way that minimizes that required
+inter-node communication. This is especially important when dealing with
+collective operations for a team of images, where member images may be
+distributed and fixed across the nodes in a non-uniform manner. We therefore developed
+2-level algorithms for these collective operations which exploit the fact that
+the operations are presumed to be commutative and associative.  %, similar to the 2-level
+%dissemination barrier algorithms we described earlier in the chapter.
+Each compute node which has at least one image in the team has a designated
+leader image, and all the leaders in the team have a unique \textit{leader
+index}.
+
+During the initialization stage, the GASNet communication layer provides us a function \texttt{gasnet\_getNodeInfo()} to query the information of each gasnet node, which is image in this case. The node info structure includes an component called supernode, indicating the id of physical node, comprised by multiple cores that share a physical memory. 
+
+When performing the \textit{reduce} or \textit{allreduce} operation, there are three phases. In
+the first phase, team members residing on the same compute node will reduce to
+the leader image. In the second phase, the leaders, will carry out either the
+\textit{reduce} or \textit{allreduce} operation among themselves. After the second phase, the
+first leader has the final result for \textit{reduce} operation, and all leaders have
+the final result for the \textit{allreduce} operation. In the third and final phase,
+for the \textit{reduce} operation the first leader will write the final result to the
+root image, if it is not itself the root image. For the final phase of the
+\textit{allreduce} operation, each leader image will broadcast its result to other
+images on its compute node. Depending on the particular topology of the
+compute node, this intra-node broadcast may be implemented using a binomial
+tree algorithm, or by simply having all the non-leaders on a node read the
+final result from the leader with the requisite synchronizations.
+
+For the \textit{broadcast} operation, the three phases are as follows. In the first
+phase, the source image will first write its data to the first leader image in
+the team. In the second phase, the leaders will collectively perform a
+binomial tree broadcast. In the final phase, each leader will broadcast its
+result to the non-leaders on its node.
+
+We also enhanced our barrier implementation by taking advantage of node
+locality information provided by the underlying runtime layer, described
+in~\cite{cafteams-cluster}.  Within the runtime descriptor for a team there is
+a list of image indices for images that reside on the same node and a list of
+image indices for images in the team which are designated leaders of their
+respective nodes. Using this structure, we implemented a \textit{2-level} team
+barrier algorithm as follows. When an image encounters the barrier, it will
+either notify the leader image of its node, or if it is itself a leader it
+will wait on notifications from the non-leaders. Once the leader image has
+collected notifications from all other images in the same node, it engages in
+a dissemination barrier with other leader images in the team, as described
+above. Finally, once the dissemination barrier completes the leaders will
+notify its non-leaders that all images in the team have encountered the
+barrier. Each non-leader image will atomically increment a shared counter
+residing on the leader image within the node to signal that it reached the
+barrier, and it will wait for a synchronization flag to be toggled by the
+leader to signal that the rest of the images have also reached the barrier.
 
 \subsection{Distributed member mapping list}
+Consider the actual team structure in memory shown in figure~\ref{fig:teams-structure}, the local memory usage is proportional to the number of images in this team. Besides, if we take the \textit{sibling team} into consider and store the image mapping lists into local team structure, the memory usage will be proportional to the total number of images in envrionment. The program can benefit from this all-in-local manner when the number of images is small because the lookup cost in local memory is O(1). But it is an obvious factor that hurts the scalibility. 
 
-%\section{Extensions}
-%[in progress]
-%\subsection{Non-blocking Team Construct}
-%\subsection{Node Team}
-%Node team is a kind of teams runtime constructs for users. A node team represent a collect of processes that share the same `Node', usually means they shared the same memory. This can be useful for users to implement better program with considering the data locality. 
+One reasonable way to resolve it is to distribute the mapping information into different images and we need a mechanism to query each time when we need to send the put/get communication calls. The \textit{team} structure only need to store a few information within it.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.58]{figures/team_structure.eps}
+\caption{OpenUH Coarray Fortran team structure in memory}
+\label{fig:teams-structure}
+\end{figure}
+
+Here I proposed and implemented the distributed member mapping list in a simple manner. Each image contains the mapping information from its predecessor and successor. So in a global view, the images form a double-linked list. Each time when a image launch a communication call to image that is not its predecessor or successor, it will send an \textit{active message} to look through this list. 
+
+We demostrate the mechanism of \textit{active message} in figure~\ref{fig:am-imgidx} and implementation snippet in figure~\ref{fig:demo-imgidx}. Without much prove we can see the delay of the index query will hurts communication performance severely. 
+\begin{figure}[h]
+    \begin{minipage}{0.35\columnwidth}
+     \lstset{language=C,basicstyle=\tt\small,
+     morekeywords={team, change}
+     }
+    \begin{lstlisting}
+int get_imgidx(team_type * this_team, uint32_t image) {
+	/*check input */
+	int32_t idx = -1;
+	if(idx=find_in_local(this_team) != -1) return idx;
+	else {
+		if(IN_LEFT_SIDE(image, this_team)) 
+			gasnet_AMRequestMedium1(this->team->pre, 
+				GASNET_HANDLER_IMGIDX_REQUEST,
+				...);
+		else {
+			gasnet_AMRequestMedium1(this->team->suc, 
+				GASNET_HANDLER_IMGIDX_REQUEST,
+				...);
+		}	
+		GASNET_BLOCKUNTIL();
+	}
+	...
+	return idx;
+}
+\end{lstlisting}
+\end{minipage}
+\caption{Code skeleton of image index query}
+\label{fig:demo-imgidx}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.58]{figures/amdemo.eps}
+\caption{Active Message to query the image index}
+\label{fig:am-imgidx}
+\end{figure}
+To reduce the unnecessary network delay, we should try to store as much information as possible in the local memory so that the query function will return at the first step. In addtion to this query function, we also implemented a cache mechanism to store most recently queried result. 
+
+As we know there are several cache mechanism with different emphasis property. Here we implemented a simple LRU cache using hash table and double-linked list. We consider the amortized complexity of lookup operation on a hash table is O(1). The lookup and maintainess cost of this LRU is in constant complexity. 
+
+%During the \texttt{FORM\_TEAM} stage

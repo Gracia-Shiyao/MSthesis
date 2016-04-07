@@ -1,0 +1,40 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {1.1}Motivation}{2}
+\contentsline {section}{\numberline {1.2}Contributions}{3}
+\contentsline {section}{\numberline {1.3}Thesis Organization}{3}
+\contentsline {chapter}{\numberline {2}Background}{5}
+\contentsline {section}{\numberline {2.1}PGAS model}{5}
+\contentsline {section}{\numberline {2.2}Fortran in HPC}{9}
+\contentsline {section}{\numberline {2.3}Task Decomposition in Parallel Program}{12}
+\contentsline {section}{\numberline {2.4}Survey of Coarray Fortran Implementations}{14}
+\contentsline {subsection}{\numberline {2.4.1}OpenCoarrays}{14}
+\contentsline {subsection}{\numberline {2.4.2}Rice CAF 2.0}{15}
+\contentsline {chapter}{\numberline {3}Infrastructure}{17}
+\contentsline {section}{\numberline {3.1}OpenUH compiler}{17}
+\contentsline {section}{\numberline {3.2}Coarray Fortran}{19}
+\contentsline {subsection}{\numberline {3.2.1}Execution Unit}{20}
+\contentsline {subsection}{\numberline {3.2.2}Coarrays}{20}
+\contentsline {subsection}{\numberline {3.2.3}Image Control Statement}{22}
+\contentsline {subsection}{\numberline {3.2.4}Teams and collectives}{22}
+\contentsline {subsection}{\numberline {3.2.5}Termination}{23}
+\contentsline {subsection}{\numberline {3.2.6}Other features}{23}
+\contentsline {section}{\numberline {3.3}GASNet}{24}
+\contentsline {chapter}{\numberline {4}Implementation}{26}
+\contentsline {section}{\numberline {4.1}Baseline Team Implemenation}{26}
+\contentsline {subsection}{\numberline {4.1.1}Memory Management}{28}
+\contentsline {subsection}{\numberline {4.1.2}Forming and Changing Teams}{31}
+\contentsline {subsection}{\numberline {4.1.3}Synchronization and Collective Operations}{36}
+\contentsline {section}{\numberline {4.2}Runtime Optimizations}{38}
+\contentsline {subsection}{\numberline {4.2.1}Runtime Data Locality Optimization}{38}
+\contentsline {subsection}{\numberline {4.2.2}Distributed member mapping list}{40}
+\contentsline {chapter}{\numberline {5}Results}{46}
+\contentsline {section}{\numberline {5.1}Experiment Setup}{46}
+\contentsline {section}{\numberline {5.2}Benchmarks}{47}
+\contentsline {subsection}{\numberline {5.2.1}Team Microbenchmark}{47}
+\contentsline {subsubsection}{\numberline {5.2.1.1}Evaluation of Form\_Team}{47}
+\contentsline {subsubsection}{\numberline {5.2.1.2}Evaluation of Team Barriers}{47}
+\contentsline {subsection}{\numberline {5.2.2}Reduction}{50}
+\contentsline {subsection}{\numberline {5.2.3}Using Team-based Collectives for CG}{51}
+\contentsline {chapter}{\numberline {6}Conclusion}{54}
+\contentsline {section}{\numberline {6.1}Future Work}{55}
+\contentsline {chapter}{Bibliography}{56}

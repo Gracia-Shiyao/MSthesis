@@ -1,0 +1,20 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces PGAS programming model\relax }}{7}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces OpenUH compiler infrastructure\relax }}{18}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces OpenUH Coarray Fortran team implementation\relax }}{27}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Code depicting allocation of coarrays inside teams\relax }}{30}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Code skeleton of FORM\_TEAM\relax }}{34}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces OpenUH Coarray Fortran team structure in memory\relax }}{41}
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Active Message to query the image index\relax }}{42}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Evolving state of managed heap during team-relative symmetric allocations\relax }}{44}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Code skeleton of image index query\relax }}{45}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Comparison of FORM\_TEAM\relax }}{47}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Barrier synchronization for groups of images (4096 total images), on Stampede.\relax }}{48}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Comparison of team barrier between UHCAF and CAF 2.0 (1024 total images), on Stampede.\relax }}{49}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Performance evaluations for the 2-level reduction algorithm using the Teams Microbenchmark suite\relax }}{51}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces CG benchmark (class D) on Stampede, using 16 images per node\relax }}{52}
+\addvspace {10\p@ }

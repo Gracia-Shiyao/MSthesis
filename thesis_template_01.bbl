@@ -1,0 +1,214 @@
+\begin{thebibliography}{10}
+
+\bibitem{parallelencyclopedia}
+G.~Almasi.
+\newblock Pgas (partitioned global address space) languages.
+\newblock In {\em Encyclopedia of Parallel Computing}, pages 1539--1545.
+  Springer, 2011.
+
+\bibitem{barrett2006co}
+R.~Barrett.
+\newblock Co-array fortran experiences with finite differencing methods.
+\newblock In {\em The 48th Cray User Group meeting, Lugano, Italy}. Citeseer,
+  2006.
+
+\bibitem{bonachea2002gasnetspec}
+D.~Bonachea.
+\newblock Gasnet specification, v1. 1.
+\newblock 2002.
+
+\bibitem{bonachea2002gasnet}
+D.~Bonachea and J.~Jeong.
+\newblock Gasnet: A portable high-performance communication layer for global
+  address-space languages.
+\newblock {\em CS258 Parallel Computer Architecture Project, Spring}, 2002.
+
+\bibitem{bozkus1994compiling}
+Z.~Bozkus, A.~Choudhary, G.~Fox, T.~Haupt, S.~Ranka, and M.-Y. Wu.
+\newblock Compiling fortran 90d/hpf for distributed memory mimd computers.
+\newblock {\em Journal of Parallel and Distributed Computing}, 21(1):15--26,
+  1994.
+
+\bibitem{carlson1999introduction}
+W.~W. Carlson, J.~M. Draper, D.~E. Culler, K.~Yelick, E.~Brooks, and K.~Warren.
+\newblock {\em Introduction to UPC and language specification}.
+\newblock Center for Computing Sciences, Institute for Defense Analyses, 1999.
+
+\bibitem{chamberlain2007parallel}
+B.~L. Chamberlain, D.~Callahan, and H.~P. Zima.
+\newblock Parallel programmability and the chapel language.
+\newblock {\em International Journal of High Performance Computing
+  Applications}, 21(3):291--312, 2007.
+
+\bibitem{chapman2010introducing}
+B.~Chapman, T.~Curtis, S.~Pophale, S.~Poole, J.~Kuehn, C.~Koelbel, and
+  L.~Smith.
+\newblock Introducing openshmem: Shmem for the pgas community.
+\newblock In {\em Proceedings of the Fourth Conference on Partitioned Global
+  Address Space Programming Model}, page~2. ACM, 2010.
+
+\bibitem{chapman2013experiences}
+B.~Chapman, D.~Eachempati, and O.~Hernandez.
+\newblock Experiences developing the openuh compiler and runtime
+  infrastructure.
+\newblock {\em International Journal of Parallel Programming}, 41(6):825--854,
+  2013.
+
+\bibitem{charles2005x10}
+P.~Charles, C.~Grothoff, V.~Saraswat, C.~Donawa, A.~Kielstra, K.~Ebcioglu,
+  C.~Von~Praun, and V.~Sarkar.
+\newblock X10: an object-oriented approach to non-uniform cluster computing.
+\newblock {\em Acm Sigplan Notices}, 40(10):519--538, 2005.
+
+\bibitem{coarfa2003co}
+C.~Coarfa, Y.~Dotsenko, J.~Eckhardt, and J.~Mellor-Crummey.
+\newblock Co-array fortran performance and potential: An npb experimental
+  study.
+\newblock In {\em Languages and Compilers for Parallel Computing}, pages
+  177--193. Springer, 2003.
+
+\bibitem{caf-spec}
+F.~S. Committee.
+\newblock {TS 18508 Additional Parallel Features in Fortran (WG5/N2074)}.
+\newblock Technical report, August 2015.
+
+\bibitem{diaz2012survey}
+J.~Diaz, C.~Munoz-Caro, and A.~Nino.
+\newblock A survey of parallel programming models and tools in the multi and
+  many-core era.
+\newblock {\em Parallel and Distributed Systems, IEEE Transactions on},
+  23(8):1369--1386, 2012.
+
+\bibitem{dotsenko2004multi}
+Y.~Dotsenko, C.~Coarfa, and J.~Mellor-Crummey.
+\newblock A multi-platform co-array fortran compiler.
+\newblock In {\em Proceedings of the 13th International Conference on Parallel
+  Architectures and Compilation Techniques}, pages 29--40. IEEE Computer
+  Society, 2004.
+
+\bibitem{EachempatiCAF2010}
+D.~Eachempati, H.~J. Jun, and B.~Chapman.
+\newblock An open-source compiler and runtime implementation for {Coarray}
+  {Fortran}.
+\newblock In {\em Proceedings of the Fourth Conference on Partitioned Global
+  Address Space Programming Model}, PGAS '10, pages 13:1--13:8, New York, NY,
+  USA, 2010. ACM.
+
+\bibitem{EachempatiCoarray2013}
+D.~Eachempati, A.~Richardson, S.~Jana, T.~Liao, H.~Calandra, and B.~Chapman.
+\newblock A {Coarray} {Fortran} implementation to support data-intensive
+  application development.
+\newblock {\em Cluster Computing}, 17(2):569--583, 2014.
+
+\bibitem{opencoarrays}
+A.~Fanfarillo, T.~Burnus, V.~Cardellini, S.~Filippone, D.~Nagle, and D.~Rouson.
+\newblock Opencoarrays: open-source transport layers supporting coarray fortran
+  compilers.
+\newblock In {\em Proceedings of the 8th International Conference on
+  Partitioned Global Address Space Programming Models}, page~4. ACM, 2014.
+
+\bibitem{gropp1999using}
+W.~Gropp, E.~Lusk, and A.~Skjellum.
+\newblock {\em Using MPI: portable parallel programming with the
+  message-passing interface}, volume~1.
+\newblock MIT press, 1999.
+
+\bibitem{gupta1995hpf}
+M.~Gupta, S.~Midkiff, E.~Schonberg, V.~Seshadri, D.~Shields, K.-Y. Wang, W.-M.
+  Ching, and T.~Ngo.
+\newblock An hpf compiler for the ibm sp2.
+\newblock In {\em Supercomputing, 1995. Proceedings of the IEEE/ACM SC95
+  Conference}, pages 71--71. IEEE, 1995.
+
+\bibitem{hilfinger2005titanium}
+P.~N. Hilfinger, D.~O. Bonachea, K.~Datta, D.~Gay, S.~L. Graham, B.~R. Liblit,
+  G.~Pike, J.~Z. Su, and K.~A. Yelick.
+\newblock Titanium language reference manual, version 2.19.
+\newblock Technical report, UC Berkeley Tech Rep. UCB/EECS-2005-15, 2005.
+
+\bibitem{hirschberg1978fast}
+D.~S. Hirschberg.
+\newblock Fast parallel sorting algorithms.
+\newblock {\em Communications of the ACM}, 21(8):657--661, 1978.
+
+\bibitem{kamil2012hierarchical}
+A.~Kamil and K.~Yelick.
+\newblock Hierarchical additions to the spmd programming model.
+\newblock Technical report, Citeseer, 2012.
+
+\bibitem{upc-teams}
+A.~A. Kamil.
+\newblock {A Team Analysis Proposal for Recursive Single Program, Multiple Data
+  Programs}.
+\newblock Technical Report UCB/EECS-2012-183, EECS Department, University of
+  California, Berkeley, Aug 2012.
+
+\bibitem{kasim2008survey}
+H.~Kasim, V.~March, R.~Zhang, and S.~See.
+\newblock Survey on parallel programming model.
+\newblock In {\em Network and Parallel Computing}, pages 266--275. Springer,
+  2008.
+
+\bibitem{Kennedy2011}
+K.~Kennedy, C.~Koelbel, and H.~Zima.
+\newblock The rise and fall of high performance fortran.
+\newblock {\em Commun. ACM}, 54(11):74--82, Nov. 2011.
+
+\bibitem{liao2007openuh}
+C.~Liao, O.~Hernandez, B.~Chapman, W.~Chen, and W.~Zheng.
+\newblock Openuh: An optimizing, portable openmp compiler.
+\newblock {\em Concurrency and Computation: Practice and Experience},
+  19(18):2317--2332, 2007.
+
+\bibitem{loveman1993high}
+D.~B. Loveman.
+\newblock High performance fortran.
+\newblock {\em Parallel \& Distributed Technology: Systems \& Applications,
+  IEEE}, 1(1):25--42, 1993.
+
+\bibitem{mellor2009new}
+J.~Mellor-Crummey, L.~Adhianto, W.~N. Scherer~III, and G.~Jin.
+\newblock A new vision for coarray fortran.
+\newblock In {\em Proceedings of the Third Conference on Partitioned Global
+  Address Space Programing Models}, page~5. ACM, 2009.
+
+\bibitem{fortranlanguage}
+M.~Metcalf.
+\newblock Fortran 90 and its successors.
+\newblock In {\em Encyclopedia of Parallel Computing}, pages 711--718.
+  Springer, 2011.
+
+\bibitem{nieplocha1994global}
+J.~Nieplocha, R.~J. Harrison, and R.~J. Littlefield.
+\newblock Global arrays: a portable shared-memory programming model for
+  distributed memory computers.
+\newblock In {\em Proceedings of the 1994 ACM/IEEE conference on
+  Supercomputing}, pages 340--349. IEEE Computer Society Press, 1994.
+
+\bibitem{numrich1998co}
+R.~W. Numrich and J.~Reid.
+\newblock Co-array fortran for parallel programming.
+\newblock In {\em ACM Sigplan Fortran Forum}, volume~17, pages 1--31. ACM,
+  1998.
+
+\bibitem{stitt2009introduction}
+T.~Stitt.
+\newblock {\em An introduction to the Partitioned Global Address Space (PGAS)
+  programming model}.
+\newblock Connexions, Rice University, 2009.
+
+\bibitem{shmem-teams}
+A.~Welch, S.~Pophale, P.~Shamis, O.~Hernandez, S.~Poole, and B.~Chapman.
+\newblock {Extending the OpenSHMEM Memory Model to Support User-Defined
+  Spaces}.
+\newblock {\em PGAS 2014}, oct 2014.
+
+\bibitem{yelick2007productivity}
+K.~Yelick, D.~Bonachea, W.-Y. Chen, P.~Colella, K.~Datta, J.~Duell, S.~L.
+  Graham, P.~Hargrove, P.~Hilfinger, P.~Husbands, et~al.
+\newblock Productivity and performance using partitioned global address space
+  languages.
+\newblock In {\em Proceedings of the 2007 international workshop on Parallel
+  symbolic computation}, pages 24--32. ACM, 2007.
+
+\end{thebibliography}
